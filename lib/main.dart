@@ -34,6 +34,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SecondScreen(
+            email: _emailController.text,
+            phone: _phoneController.text,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,18 +126,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Erfolgreiche Registrierung')),
-                    );
-                  }
-                },
+                onPressed: _submitForm,
                 child: const Text('Anmelden'),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class SecondScreen extends StatelessWidget {
+  final String email;
+  final String phone;
+
+  SecondScreen({required this.email, required this.phone});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Aufgabe 2"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Text('Registrierung erfolgreich!',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text('E-Mail: $email', style: const TextStyle(fontSize: 16)),
+            Text('Telefonnummer: $phone', style: const TextStyle(fontSize: 16)),
+          ],
         ),
       ),
     );
